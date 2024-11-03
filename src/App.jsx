@@ -1,3 +1,4 @@
+import { Container } from "@mui/material";
 import { Route, Routes } from "react-router-dom"
 
 import Nav from "./Components/Nav"
@@ -9,7 +10,7 @@ import Account from "./Components/Account"
 function App() {
 
   return (
-    <>
+    <Container>
       <Nav />
       <Routes>
         <Route path="/" element={ <Home /> } />
@@ -17,7 +18,7 @@ function App() {
         <Route path="/auth" element={ <Auth /> } />
         <Route path="/account" element={ <Account /> } />
       </Routes>
-    </>
+    </Container>
   )
 }
 
