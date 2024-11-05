@@ -8,7 +8,21 @@ function Game({ players, room, orientation, cleanup }) {
   const [fen, setFen] = useState(chess.fen());
   const [over, setOver] = useState("");
 
-  function onDrop() {}
+  function onDrop(sourceSquare, targetSquare) {
+    const moveData = {
+      from: sourceSquare,
+      to: targetSquare,
+      color: chess.turn(),
+      // promotion: "q",
+    };
+
+    const move = makeAMove(moveData);
+
+    // illegal move
+    if (move === null) return false;
+
+    return true;
+  }
   
   return (
     <>
