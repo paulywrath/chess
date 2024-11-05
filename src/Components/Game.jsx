@@ -55,7 +55,11 @@ function Game({ players, room, orientation, cleanup }) {
   
   return (
     <>
-      <div className="board">
+      <div className="board" style={{
+        maxWidth: 600,
+        maxHeight: 600,
+        flexGrow: 1,
+      }}>
         <Chessboard position={fen} onPieceDrop={onDrop} />  {/**  <- 4 */}
       </div>
       <CustomDialog
