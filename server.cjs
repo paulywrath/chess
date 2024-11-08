@@ -15,6 +15,11 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
   console.log(socket.id, 'connected');
+
+  socket.on('username', (username) => {
+    console.log('username:', username);
+    socket.data.username = username;
+  });
 });
 
 server.listen(port, () => {
