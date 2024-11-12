@@ -43,7 +43,11 @@ export default function InitGame({ setRoom, setOrientation, setPlayers }) {
       <Button
         variant="contained"
         onClick={() => {
-          // create a room
+          socket.emit("createRoom", (r) => {
+            console.log(r);
+            setRoom(r);
+            setOrientation("white");
+          });
         }}
       >
         Start a game
@@ -56,7 +60,7 @@ export default function InitGame({ setRoom, setOrientation, setPlayers }) {
       >
         Join a game
       </Button>
-      
+
     </Stack>
   );
 }

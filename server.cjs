@@ -13,12 +13,26 @@ const io = new Server(server, {
   cors: '*',
 });
 
+const rooms = new Map();
+
 io.on('connection', (socket) => {
   console.log(socket.id, 'connected');
 
   socket.on('username', (username) => {
     console.log('username:', username);
     socket.data.username = username;
+  });
+
+  socket.on('createRoom', async (callback) => {
+    const roomId = uuidV4();
+    await socket.join(roomId);
+   
+    rooms.set(roomId, {
+      roomId,
+      players: [{ id: socket.id, username: socket.data?.username }]
+    });
+
+    callback(roomId);
   });
 });
 
