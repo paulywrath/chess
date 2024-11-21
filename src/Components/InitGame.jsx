@@ -1,7 +1,7 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { useState } from "react";
-import CustomDialog from "./components/CustomDialog";
-import socket from './socket';
+import CustomDialog from "./CustomDialog";
+import socket from '../socket';
 
 export default function InitGame({ setRoom, setOrientation, setPlayers }) {
   const [roomDialogOpen, setRoomDialogOpen] = useState(false);
@@ -20,7 +20,15 @@ export default function InitGame({ setRoom, setOrientation, setPlayers }) {
         title="Select Room to Join"
         contentText="Enter a valid room ID to join the room"
         handleContinue={() => {
-          // join a room
+          if (!roomInput) return;
+          socket.emit("joinRoom", { roomId: roomInput }, (r) => {
+            if (r.error) return setRoomError(r.message);
+            console.log("response:", r);
+            setRoom(r?.roomId);
+            setPlayers(r?.players);
+            setOrientation("black");
+            setRoomDialogOpen(false);
+          });
         }}
       >
         <TextField
