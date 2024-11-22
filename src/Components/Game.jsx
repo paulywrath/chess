@@ -2,6 +2,7 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import CustomDialog from "./CustomDialog";
+import socket from "../socket";
 
 function Game({ players, room, orientation, cleanup }) {
   const chess = useMemo(() => new Chess(), []);
@@ -38,17 +39,25 @@ function Game({ players, room, orientation, cleanup }) {
   );
   
   function onDrop(sourceSquare, targetSquare) {
+    if (chess.turn() !== orientation[0]) return false;
+
+    if (players.length < 2) return false;
+    
     const moveData = {
       from: sourceSquare,
       to: targetSquare,
       color: chess.turn(),
-      // promotion: "q",
+      // promotion: "q"
     };
 
     const move = makeAMove(moveData);
 
-    // illegal move
     if (move === null) return false;
+
+    socket.emit("move", {
+      move,
+      room,
+    });
 
     return true;
   }
@@ -60,7 +69,7 @@ function Game({ players, room, orientation, cleanup }) {
         maxHeight: 600,
         flexGrow: 1,
       }}>
-        <Chessboard position={fen} onPieceDrop={onDrop} />  {/**  <- 4 */}
+        <Chessboard position={fen} onPieceDrop={onDrop} />
       </div>
       <CustomDialog
         open={Boolean(over)}
