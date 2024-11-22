@@ -47,7 +47,7 @@ function Game({ players, room, orientation, cleanup }) {
       from: sourceSquare,
       to: targetSquare,
       color: chess.turn(),
-      // promotion: "q"
+      promotion: "q"
     };
 
     const move = makeAMove(moveData);
