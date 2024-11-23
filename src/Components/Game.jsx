@@ -87,11 +87,7 @@ function Game({ players, room, orientation, cleanup }) {
         </CardContent>
       </Card>
       <Stack flexDirection="row" sx={{ pt: 2 }}>
-        <div className="board" style={{
-          maxWidth: 600,
-          maxHeight: 600,
-          flexGrow: 1,
-        }}>
+        <div className="board">
           <Chessboard boardOrientation={orientation} position={fen} onPieceDrop={onDrop} />
         </div>
         {players.length > 0 && (
