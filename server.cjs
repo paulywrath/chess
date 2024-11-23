@@ -78,6 +78,10 @@ io.on('connection', (socket) => {
 
     socket.to(args.roomId).emit('opponentJoined', roomUpdate);
   });
+
+  socket.on('move', (data) => {
+    socket.to(data.room).emit('move', data.move);
+  });
 });
 
 server.listen(port, () => {

@@ -62,6 +62,12 @@ function Game({ players, room, orientation, cleanup }) {
     return true;
   }
   
+  useEffect(() => {
+    socket.on("move", (move) => {
+      makeAMove(move); //
+    });
+  }, [makeAMove]);
+
   return (
     <>
       <div className="board" style={{
