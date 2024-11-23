@@ -75,7 +75,7 @@ function Game({ players, room, orientation, cleanup }) {
         maxHeight: 600,
         flexGrow: 1,
       }}>
-        <Chessboard position={fen} onPieceDrop={onDrop} />
+        <Chessboard boardOrientation={orientation} position={fen} onPieceDrop={onDrop} />
       </div>
       <CustomDialog
         open={Boolean(over)}
