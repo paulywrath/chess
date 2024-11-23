@@ -3,6 +3,17 @@ import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import CustomDialog from "./CustomDialog";
 import socket from "../socket";
+import {
+  Card,
+  CardContent,
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
+  Stack,
+  Typography,
+  Box,
+} from "@mui/material";
 
 function Game({ players, room, orientation, cleanup }) {
   const chess = useMemo(() => new Chess(), []);
@@ -69,14 +80,33 @@ function Game({ players, room, orientation, cleanup }) {
   }, [makeAMove]);
 
   return (
-    <>
-      <div className="board" style={{
-        maxWidth: 600,
-        maxHeight: 600,
-        flexGrow: 1,
-      }}>
-        <Chessboard boardOrientation={orientation} position={fen} onPieceDrop={onDrop} />
-      </div>
+    <Stack>
+      <Card>
+        <CardContent>
+          <Typography variant="h5">Room ID: {room}</Typography>
+        </CardContent>
+      </Card>
+      <Stack flexDirection="row" sx={{ pt: 2 }}>
+        <div className="board" style={{
+          maxWidth: 600,
+          maxHeight: 600,
+          flexGrow: 1,
+        }}>
+          <Chessboard boardOrientation={orientation} position={fen} onPieceDrop={onDrop} />
+        </div>
+        {players.length > 0 && (
+          <Box>
+            <List>
+              <ListSubheader>Players</ListSubheader>
+              {players.map((p) => (
+                <ListItem key={p.id}>
+                  <ListItemText primary={p.username} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        )}
+      </Stack>
       <CustomDialog
         open={Boolean(over)}
         title={over}
@@ -85,7 +115,7 @@ function Game({ players, room, orientation, cleanup }) {
           setOver("");
         }}
       />
-    </>
+    </Stack>
   );
 }
 
