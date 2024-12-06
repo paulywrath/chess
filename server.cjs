@@ -82,6 +82,23 @@ io.on('connection', (socket) => {
   socket.on('move', (data) => {
     socket.to(data.room).emit('move', data.move);
   });
+
+  socket.on("disconnect", () => {
+    const gameRooms = Array.from(rooms.values());
+
+    gameRooms.forEach((room) => {
+      const userInRoom = room.players.find((player) => player.id === socket.id);
+
+      if (userInRoom) {
+        if (room.players.length < 2) {
+          rooms.delete(room.roomId);
+          return;
+        }
+
+        socket.to(room.roomId).emit("playerDisconnected", userInRoom);
+      }
+    });
+  });
 });
 
 server.listen(port, () => {

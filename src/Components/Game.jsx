@@ -79,6 +79,12 @@ function Game({ players, room, orientation, cleanup }) {
     });
   }, [makeAMove]);
 
+  useEffect(() => {
+    socket.on('playerDisconnected', (player) => {
+      setOver(`${player.username} has disconnected`);
+    });
+  }, []);
+
   return (
     <Stack>
       <Card>
