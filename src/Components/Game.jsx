@@ -80,6 +80,14 @@ function Game({ players, room, orientation, cleanup }) {
   }, [makeAMove]);
 
   useEffect(() => {
+    socket.on('closeRoom', ({ roomId }) => {
+      if (roomId === room) {
+        cleanup();
+      }
+    });
+  }, [room, cleanup]);
+
+  useEffect(() => {
     socket.on('playerDisconnected', (player) => {
       setOver(`${player.username} has disconnected`);
     });
@@ -114,7 +122,8 @@ function Game({ players, room, orientation, cleanup }) {
         title={over}
         contentText={over}
         handleContinue={() => {
-          setOver("");
+          socket.emit("closeRoom", { roomId: room });
+          cleanup();
         }}
       />
     </Stack>

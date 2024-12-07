@@ -83,6 +83,18 @@ io.on('connection', (socket) => {
     socket.to(data.room).emit('move', data.move);
   });
 
+  socket.on("closeRoom", async (data) => {
+    socket.to(data.roomId).emit("closeRoom", data);
+
+    const clientSockets = await io.in(data.roomId).fetchSockets();
+
+    clientSockets.forEach((s) => {
+      s.leave(data.roomId);
+    });
+
+    rooms.delete(data.roomId);
+  }); 
+
   socket.on("disconnect", () => {
     const gameRooms = Array.from(rooms.values());
 
